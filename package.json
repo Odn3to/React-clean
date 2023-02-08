@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Odn3to/React-clean/issues"
   },
-  "homepage": "https://github.com/Odn3to/React-clean#readme"
+  "homepage": "https://github.com/Odn3to/React-clean#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.5.0"
+  }
 }
