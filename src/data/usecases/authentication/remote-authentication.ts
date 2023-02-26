@@ -1,11 +1,8 @@
-import { type Authentication } from './../../../domain/usecases/authentication'
-
-import { type HttpPostClient } from '@/data/protocols/http/http-post-client'
-import { HttpStatusCode } from '@/data/protocols/http/http-response'
-import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-errors'
-import { UnexpectedError } from '@/domain/errors/unexpectedError'
-import { type AccountModel } from '@/domain/models/account-modal'
-import { type AuthenticationParams } from '@/domain/usecases/authentication'
+import { } from './../../../domain/usecases/authentication'
+import { type HttpPostClient, HttpStatusCode } from '@/data/protocols/http'
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
+import { type AccountModel } from '@/domain/models'
+import { type AuthenticationParams, type Authentication } from '@/domain/usecases'
 
 export class RemoteAuthentication implements Authentication {
   constructor (
@@ -20,9 +17,7 @@ export class RemoteAuthentication implements Authentication {
     })
 
     switch (httpResponse.statusCode) {
-      /* eslint-disable */
       case HttpStatusCode.ok: return httpResponse.body
-      /* eslint-enable */
       case HttpStatusCode.unathorized: throw new InvalidCredentialsError()
       default: throw new UnexpectedError()
     }
