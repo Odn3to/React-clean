@@ -36,7 +36,7 @@ module.exports = {
   },
   devServer: {
     contentBase: './public',
-    wirteToDisk: true,
+    writeToDisk: true,
     historyApiFallback: true
   },
   externals: {
