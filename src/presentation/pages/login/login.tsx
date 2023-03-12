@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useState, useEffect } from 'react'
 import Styles from './login-styles.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/components/'
 import Context from '@/presentation/contexts/form/form-context'
 import { type Validation } from '@/presentation/protocols/validation'
+import { type Authentication } from '@/domain/usecases'
 
 type Props = {
   validation: Validation
+  authentication: Authentication
 }
 
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     email: '',
@@ -26,9 +29,13 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     validation.validate('email', state.email)
   }, [state.email, state.password])
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setState({ ...state, isLoading: true })
+    await authentication.auth({
+      email: state.email,
+      password: state.password
+    })
   }
 
   return (
