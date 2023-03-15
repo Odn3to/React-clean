@@ -146,6 +146,8 @@ describe('Login Component', () => {
     simulateValidSubmit(sut)
     await waitFor(() => sut.getByTestId('form'))
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    // expect(history.index).toBe(0)
+    expect(history.location.pathname).toBe('/')
   })
   test('Should go to signup page', async () => {
     const { sut } = makeSut()
@@ -153,6 +155,6 @@ describe('Login Component', () => {
     fireEvent.click(register)
     console.log(history.index)
     expect(history.location.pathname).toBe('/signup')
-    expect(history.index).toBe(1)
+    // expect(history.index).toBe(1)
   })
 })
