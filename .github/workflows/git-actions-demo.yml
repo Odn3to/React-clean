@@ -16,5 +16,5 @@ jobs:
         with:
           node-version: '14.x'
       - run: npm install
-      - run: npm run build --if-present
+      - run: eslint . --ext .js,.jsx,.ts,.tsx
       - run: npm run test:ci
