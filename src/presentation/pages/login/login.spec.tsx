@@ -145,6 +145,7 @@ describe('Login Component', () => {
     await simulateValidSubmit(sut)
     expect(authenticationSpy.callsCount).toBe(0)
   })
+
   test('Should present error if Authentication fails', async () => {
     const { sut, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
@@ -153,12 +154,14 @@ describe('Login Component', () => {
     testElementText(sut, 'main-error', error.message)
     testErrorWrapChildCount(sut, 1)
   })
+
   test('Should call SaveAccessToken on success', async () => {
     const { sut, authenticationSpy, saveAccessTokenMock } = makeSut()
     await simulateValidSubmit(sut)
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
     expect(history.location.pathname).toBe('/')
   })
+
   test('Should go to signup page', async () => {
     const { sut } = makeSut()
     const register = sut.getByTestId('signup')
