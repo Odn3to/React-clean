@@ -36,8 +36,10 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: './public',
-    writeToDisk: true,
+    static: './public',
+    devMiddleware: {
+      writeToDisk: true
+    },
     historyApiFallback: true
   },
   externals: {
@@ -47,7 +49,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new DefinePlugin({
-      'process.env.API_URL': 'http://localhost:5050/api'
+      'process.env.API_URL': JSON.stringify('http://localhost:5050/api')
     })
   ]
 }
