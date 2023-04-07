@@ -20,9 +20,9 @@ type SutParams = {
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
   const saveAccessTokenMock = new SaveAccessTokenMock()
-  validationStub.errorMessage = params?.validationError
   const sut = render(
     <Router location={history.location} navigator={history}>
       <Login
@@ -77,39 +77,46 @@ describe('Login Component', () => {
     Helper.testStatusForField(sut, 'email', validationError)
     Helper.testStatusForField(sut, 'password', validationError)
   })
+
   test('Should show email error if Validation fails', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
     populateEmailField(sut)
     Helper.testStatusForField(sut, 'email', validationError)
   })
+
   test('Should show password error if Validation fails', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
     populatePasswordField(sut)
     Helper.testStatusForField(sut, 'password', validationError)
   })
+
   test('Should show valid email state if Validation succeeds', () => {
     const { sut } = makeSut()
     populateEmailField(sut)
     Helper.testStatusForField(sut, 'email')
   })
+
   test('Should show valid password state if Validation succeeds', () => {
     const { sut } = makeSut()
     populatePasswordField(sut)
     Helper.testStatusForField(sut, 'password')
   })
+
   test('Should enable submit button if form is Valid', () => {
     const { sut } = makeSut()
     populateEmailField(sut)
     populatePasswordField(sut)
     Helper.testButtonIsDisebled(sut, 'submit', false)
   })
+
   test('Should show spinner on submit', async () => {
     const { sut } = makeSut()
     await simulateValidSubmit(sut)
     testElementExists(sut, 'spinner')
   })
+
   test('Should call Authentication witch correct values', async () => {
     const { sut, authenticationSpy } = makeSut()
     const password = faker.internet.password()
@@ -117,12 +124,14 @@ describe('Login Component', () => {
     await simulateValidSubmit(sut, email, password)
     expect(authenticationSpy.params).toEqual({ email, password })
   })
+
   test('Should call Authentication only once', async () => {
     const { sut, authenticationSpy } = makeSut()
     await simulateValidSubmit(sut)
     await simulateValidSubmit(sut)
     expect(authenticationSpy.callsCount).toBe(1)
   })
+
   test('Should not call Authentication if form is invalid', async () => {
     const validationError = faker.random.words()
     const { sut, authenticationSpy } = makeSut({ validationError })
