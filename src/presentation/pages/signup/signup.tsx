@@ -4,7 +4,7 @@ import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/component
 import Context from '@/presentation/contexts/form/form-context'
 import { type Validation } from '@/presentation/protocols/validation'
 import { type SaveAccessToken, type AddAccount } from '@/domain/usecases'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -78,7 +78,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessTokenMock }
                     className={Styles.submit}
                     type="submit"
                   >Entrar</button>
-                  <span className={Styles.link}>Voltar Para Login</span>
+                  <Link data-testid="login-link" to="/login" className={Styles.link}>Voltar Para Login</Link>
                   <FormStatus />
               </form>
             </Context.Provider>
