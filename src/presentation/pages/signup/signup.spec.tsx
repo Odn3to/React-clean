@@ -173,4 +173,12 @@ describe('SignUp Component', () => {
     expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
     expect(history.location.pathname).toBe('/')
   })
+
+  test('Should go to signup page', async () => {
+    const { sut } = makeSut()
+    const loginLink = sut.getByTestId('login-link')
+    fireEvent.click(loginLink)
+    expect(window.history.length).toBe(1)
+    expect(history.location.pathname).toBe('/login')
+  })
 })
