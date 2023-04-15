@@ -9,6 +9,7 @@
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "test:coveralls": "npm test:ci && coveralls < coverage/lcov.info",
+    "test:cypress": "cypress open",
     "check": "npm-check -u -s"
   },
   "repository": {
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/Odn3to/React-clean#readme",
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^5.17.0",
     "@faker-js/faker": "^7.6.0",
     "@testing-library/react": "^14.0.0",
     "@types/faker": "^6.6.9",
@@ -33,8 +35,10 @@
     "clean-webpack-plugin": "^4.0.0",
     "coveralls": "^3.1.1",
     "css-loader": "^6.7.3",
+    "cypress": "^12.9.0",
     "eslint": "^8.36.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
@@ -54,7 +58,7 @@
     "style-loader": "^3.3.2",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",

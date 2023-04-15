@@ -18,7 +18,13 @@
         "allowJs": true,
         "resolveJsonModule": true,
     },
+    "ignorePatterns": [".eslintrc.js"],
+    "exclude": [
+        "cypress"
+      ],
     "include": [
+        "./.eslintrc.js",
+        "**/*.cy.ts",
         "src"
     ]
 }
