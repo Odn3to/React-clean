@@ -4,5 +4,3 @@ coverage
 public
 *.scss
 *.json
-cypress
-cypress.config.ts
