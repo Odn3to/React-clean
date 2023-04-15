@@ -11,7 +11,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 })
 
 describe('login', () => {
-  it('Should load with correct initial state', () => {
+  beforeEach(() => {
     cy.visit('http://localhost:8080/login')
+  })
+  it('Should load with correct initial state', () => {
+    cy.getByTestId('email-status').should('have.attr', 'title', 'Campo obrigatório')
   })
 })
