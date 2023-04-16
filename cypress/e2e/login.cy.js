@@ -58,7 +58,14 @@ describe('login', () => {
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
-  it('Should present error state if form is valid', () => {
+  it('Should present invalidCredentialsError on 401', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(401, {
+          error: faker.random.words()
+        })
+      })
+    })
     cy.getByTestId('email').focus().type(faker.internet.email())
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     cy.getByTestId('submit').click()
@@ -70,15 +77,53 @@ describe('login', () => {
     cy.url().should('eq', `${baseURL}login`)
   })
 
-  it('Should present save accessToken if valid credentials are provided', () => {
-    cy.getByTestId('email').focus().type('odneto8812@gmail.com')
-    cy.getByTestId('password').focus().type('88126695')
+  it('Should present UnexpectedError on 400', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(400, {
+          error: faker.random.words()
+        })
+      })
+    })
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     cy.getByTestId('submit').click()
-    cy.getByTestId('error-wrap')
-      .getByTestId('spinner').should('exist')
-      .getByTestId('main-error').should('not.exist')
-      .getByTestId('spinner').should('not.exist')
+    cy.getByTestId('spinner').should('not.exist')
+    cy.getByTestId('main-error').should('contain.text', 'Algo de errado aconteceu. tente novamente em breve.')
+    cy.url().should('eq', `${baseURL}login`)
+  })
+
+  it('Should present save accessToken if valid credentials are provided', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(200, {
+          accessToken: faker.random.alphaNumeric()
+        })
+      })
+    })
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('submit').click()
+    cy.getByTestId('main-error').should('not.exist')
+    cy.getByTestId('spinner').should('not.exist')
     cy.url().should('eq', `${baseURL}`)
     cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+  })
+
+  it('Should present UnexpectedError if invalid data is returned', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(200, {
+          invalid: faker.random.alphaNumeric()
+        })
+      })
+    })
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('submit').click()
+    cy.getByTestId('main-error').should('not.exist')
+    cy.getByTestId('spinner').should('not.exist')
+    cy.getByTestId('main-error').should('contain.text', 'Algo de errado aconteceu. tente novamente em breve.')
+    cy.url().should('eq', `${baseURL}login`)
   })
 })
