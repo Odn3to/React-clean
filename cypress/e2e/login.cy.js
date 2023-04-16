@@ -36,7 +36,7 @@ describe('login', () => {
     cy.getByTestId('email-status')
       .should('have.attr', 'title', 'Valor inválido')
       .should('contain.text', '🔴')
-    cy.getByTestId('password').focus().type(faker.random.word())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(4))
     cy.getByTestId('password-status')
       .should('have.attr', 'title', 'Valor inválido')
       .should('contain.text', '🔴')
@@ -137,5 +137,17 @@ describe('login', () => {
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     cy.getByTestId('submit').dblclick()
     cy.get('@request.all').should('have.length', 1)
+  })
+
+  it('Should not call submit is form is invalid', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(200, {
+          accessToken: faker.random.alphaNumeric()
+        })
+      })
+    }).as('request')
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    cy.get('@request.all').should('have.length', 0)
   })
 })
