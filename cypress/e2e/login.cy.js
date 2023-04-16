@@ -126,4 +126,18 @@ describe('login', () => {
     cy.getByTestId('main-error').should('contain.text', 'Algo de errado aconteceu. tente novamente em breve.')
     cy.url().should('eq', `${baseURL}login`)
   })
+
+  it('Should present multiple submits', () => {
+    cy.intercept(/login/, (req) => {
+      req.reply((res) => {
+        res.send(200, {
+          accessToken: faker.random.alphaNumeric()
+        })
+      })
+    }).as('request')
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('submit').dblclick()
+    cy.get('@request.all').should('have.length', 1)
+  })
 })
