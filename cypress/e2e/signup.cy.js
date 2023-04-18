@@ -20,11 +20,15 @@ describe('Signup', () => {
     })
 
     it('Should present error state if form is invalid', () => {
+        cy.getByTestId('name').focus().type(faker.random.alphaNumeric(4))
+        cy.testInputStatus('name', 'Valor inválido')
         cy.getByTestId('email').focus().type(faker.random.word())
         cy.testInputStatus('email', 'Valor inválido')
         cy.getByTestId('password').focus().type(faker.random.alphaNumeric(4))
         cy.testInputStatus('password', 'Valor inválido')
+        cy.getByTestId('passwordConfirmation').focus().type(faker.random.alphaNumeric(4))
+        cy.testInputStatus('passwordConfirmation', 'Valor inválido')
         cy.getByTestId('submit').should('have.attr', 'disabled')
         cy.getByTestId('error-wrap').should('not.have.descendants')
-      })
+    })
 })
