@@ -7,5 +7,7 @@ declare namespace Cypress{
         mockOk(url: RegExp, response: any): void;
         testMainError(error: string): void;
         simulateValidSubmit(): void;
+        simulateValidSubmitSignUp(): void;
+        mockEmailInUseError(): void;
     }
 }
