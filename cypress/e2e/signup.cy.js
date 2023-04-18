@@ -74,4 +74,15 @@ describe('Signup', () => {
         cy.url().should('eq', `${baseURL}`)
         cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
     })
+
+    it('Should present multiple submits', () => {
+        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric() }).as('request')
+        cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
+        cy.getByTestId('email').focus().type(faker.internet.email())
+        const password = faker.random.alphaNumeric(5)
+        cy.getByTestId('password').focus().type(password)
+        cy.getByTestId('passwordConfirmation').focus().type(password)
+        cy.getByTestId('submit').dblclick()
+        cy.get('@request.all').should('have.length', 1)
+    })
 })
