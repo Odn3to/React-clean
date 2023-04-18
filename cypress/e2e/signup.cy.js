@@ -66,4 +66,12 @@ describe('Signup', () => {
         cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
         cy.url().should('eq', `${baseURL}signup`)
     })
+
+    it('Should present save accessToken if valid credentials are provided', () => {
+        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric() })
+        cy.simulateValidSubmitSignUp()
+        cy.getByTestId('error-wrap').should('not.have.descendants')
+        cy.url().should('eq', `${baseURL}`)
+        cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+    })
 })
