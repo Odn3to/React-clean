@@ -59,4 +59,11 @@ describe('Signup', () => {
         cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
         cy.url().should('eq', `${baseURL}signup`)
     })
+
+    it('Should present UnexpectedError if invalid data is returned', () => {
+        cy.mockOk(/signup/, { invalid: faker.random.alphaNumeric() })
+        cy.simulateValidSubmitSignUp()
+        cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
+        cy.url().should('eq', `${baseURL}signup`)
+    })
 })
