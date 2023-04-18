@@ -22,7 +22,6 @@ Cypress.Commands.add('simulateValidSubmit', () => {
   cy.getByTestId('submit').click()
 })
 
-
 Cypress.Commands.add('mockInvalidCredentialsError', (url) => {
   cy.intercept(url, (req) => {
     req.reply((res) => {
