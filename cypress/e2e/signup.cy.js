@@ -85,4 +85,10 @@ describe('Signup', () => {
         cy.getByTestId('submit').dblclick()
         cy.get('@request.all').should('have.length', 1)
     })
+
+    it('Should not call submit is form is invalid', () => {
+        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric() }).as('request')
+        cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+        cy.get('@request.all').should('have.length', 0)
+    })
 })
