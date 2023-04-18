@@ -51,5 +51,12 @@ describe('Signup', () => {
         cy.simulateValidSubmitSignUp()
         cy.testMainError('Esse email já está em uso')
         cy.url().should('eq', `${baseURL}signup`)
-      })
+    })
+
+    it('Should present UnexpectedError on 400', () => {
+        cy.mockUnexpectedError(/signup/)
+        cy.simulateValidSubmitSignUp()
+        cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
+        cy.url().should('eq', `${baseURL}signup`)
+    })
 })
