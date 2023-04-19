@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpGetClientSpy } from '@/data/test'
 import { UnexpectedError } from '@/domain/errors'
-import { faker } from '@faker-js/faker'
 import { RemoteLoadSurveyList } from './remote-load-survey-list'
 import { type SurveyModel } from '@/domain/models'
+import { mockSurveyListModel } from '@/domain/test'
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
@@ -52,5 +54,16 @@ describe('RemoteLoadSurveyList', () => {
     }
     const promise = sut.loadAll()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an list of surveyModels if HttpGetClient returns 200', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    const httpResult = mockSurveyListModel()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    const surveyList = await sut.loadAll()
+    expect(surveyList).toEqual(httpResult)
   })
 })
