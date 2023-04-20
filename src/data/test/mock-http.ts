@@ -13,6 +13,10 @@ export class HttpGetClientSpy<R> implements HttpGetClient <R> {
   }
 }
 
+export const mockGetRequest = (): HttpGetParams => ({
+  url: faker.internet.url()
+})
+
 export const mockPostRequest = (): HttpPostParams => ({
   url: faker.internet.url(),
   body: faker.random.words()
