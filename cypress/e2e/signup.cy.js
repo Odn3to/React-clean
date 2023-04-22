@@ -68,11 +68,11 @@ describe('Signup', () => {
     })
 
     it('Should present save accessToken if valid credentials are provided', () => {
-        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric() })
+        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric(), name: faker.name.firstName()  })
         cy.simulateValidSubmitSignUp()
         cy.getByTestId('error-wrap').should('not.have.descendants')
         cy.url().should('eq', `${baseURL}`)
-        cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+        cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
     })
 
     it('Should present multiple submits', () => {

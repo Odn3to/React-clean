@@ -60,11 +60,11 @@ describe('login', () => {
   })
 
   it('Should present save accessToken if valid credentials are provided', () => {
-    cy.mockOk(/login/, { accessToken: faker.random.alphaNumeric() })
+    cy.mockOk(/login/, { accessToken: faker.random.alphaNumeric(), name: faker.name.firstName() })
     cy.simulateValidSubmit()
     cy.getByTestId('error-wrap').should('not.have.descendants')
     cy.url().should('eq', `${baseURL}`)
-    cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
+    cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
   })
 
   it('Should present UnexpectedError if invalid data is returned', () => {

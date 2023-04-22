@@ -3,14 +3,14 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render, type RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import { Login } from '@/presentation/pages'
-import { ValidationStub, AuthenticationSpy, SaveAccessTokenMock, Helper } from '@/presentation/test/'
+import { ValidationStub, AuthenticationSpy, UpdateCurrentAccountMock, Helper } from '@/presentation/test/'
 import { faker } from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
   authenticationSpy: AuthenticationSpy
-  saveAccessTokenMock: SaveAccessTokenMock
+  updateCurrentAccountMock: UpdateCurrentAccountMock
 }
 
 type SutParams = {
@@ -22,19 +22,19 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
-  const saveAccessTokenMock = new SaveAccessTokenMock()
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock()
   const sut = render(
     <Router location={history.location} navigator={history}>
       <Login
         validation={validationStub}
         authentication={authenticationSpy}
-        saveAccessTokenMock={saveAccessTokenMock} />
+        updateCurrentAccount={updateCurrentAccountMock} />
     </Router>
   )
   return {
     sut,
     authenticationSpy,
-    saveAccessTokenMock
+    updateCurrentAccountMock
   }
 }
 
@@ -129,9 +129,9 @@ describe('Login Component', () => {
   })
 
   test('Should call SaveAccessToken on success', async () => {
-    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut()
+    const { sut, authenticationSpy, updateCurrentAccountMock } = makeSut()
     await simulateValidSubmit(sut)
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+    expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account)
     expect(history.location.pathname).toBe('/')
   })
 

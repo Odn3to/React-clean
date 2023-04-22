@@ -3,16 +3,16 @@ import Styles from './signup-styles.scss'
 import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components/'
 import Context from '@/presentation/contexts/form/form-context'
 import { type Validation } from '@/presentation/protocols/validation'
-import { type SaveAccessToken, type AddAccount } from '@/domain/usecases'
+import { type UpdateCurrentAccount, type AddAccount } from '@/domain/usecases'
 import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  saveAccessTokenMock: SaveAccessToken
+  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessTokenMock }: Props) => {
+const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount }: Props) => {
   const navigate = useNavigate()
   const [state, setState] = useState({
     isLoading: false,
@@ -59,7 +59,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessTokenMock }
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
-      await saveAccessTokenMock.save(account.accessToken)
+      await updateCurrentAccount.save(account)
       navigate('/')
     } catch (error) {
       setState({

@@ -4,15 +4,15 @@ import Styles from './login-styles.scss'
 import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components/'
 import Context from '@/presentation/contexts/form/form-context'
 import { type Validation } from '@/presentation/protocols/validation'
-import { type Authentication, type SaveAccessToken } from '@/domain/usecases'
+import { type Authentication, type UpdateCurrentAccount } from '@/domain/usecases'
 
 type Props = {
   validation: Validation
   authentication: Authentication
-  saveAccessTokenMock: SaveAccessToken
+  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const Login: React.FC<Props> = ({ validation, authentication, saveAccessTokenMock }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication, updateCurrentAccount }: Props) => {
   const navigate = useNavigate()
   const [state, setState] = useState({
     isLoading: false,
@@ -48,7 +48,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessTokenMoc
         email: state.email,
         password: state.password
       })
-      await saveAccessTokenMock.save(account.accessToken)
+      await updateCurrentAccount.save(account)
       navigate('/')
     } catch (error) {
       setState({
