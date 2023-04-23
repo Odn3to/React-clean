@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Styles from './signup-styles.scss'
 import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components/'
-import Context from '@/presentation/contexts/form/form-context'
+import { ApiContext, FormContext } from '@/presentation/contexts'
 import { type Validation } from '@/presentation/protocols/validation'
-import { type UpdateCurrentAccount, type AddAccount } from '@/domain/usecases'
+import { type AddAccount } from '@/domain/usecases'
 import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount }: Props) => {
+const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
   const navigate = useNavigate()
   const [state, setState] = useState({
     isLoading: false,
@@ -59,7 +59,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
-      await updateCurrentAccount.save(account)
+      setCurrentAccount(account)
       navigate('/')
     } catch (error) {
       setState({
@@ -73,7 +73,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
   return (
         <div className={Styles.signupWrap}>
             <LoginHeader />
-            <Context.Provider value={ { state, setState } }>
+            <FormContext.Provider value={ { state, setState } }>
               <form className={Styles.form} data-testid="form" onSubmit={handleSubmit}>
                   <h2>Criar Conta</h2>
                   <Input type="text" name="name" placeholder='Digite seu nome' />
@@ -84,7 +84,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
                   <Link data-testid="login-link" to="/login" className={Styles.link}>Voltar Para Login</Link>
                   <FormStatus />
               </form>
-            </Context.Provider>
+            </FormContext.Provider>
             <Footer />
         </div>
   )
