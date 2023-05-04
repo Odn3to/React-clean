@@ -8,7 +8,7 @@ const PrivateRoute: React.FC = () => {
 
   const token = getCurrentAccount()?.accessToken
 
-  return token ? <SurveyList /> : <Navigate to="/login" replace />
+  return token ? <SurveyList loadSurveyList={null} /> : <Navigate to="/login" replace />
 }
 
 export default PrivateRoute
