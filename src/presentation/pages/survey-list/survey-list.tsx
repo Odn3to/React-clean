@@ -20,7 +20,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     if (loadSurveyList) {
       loadSurveyList.loadAll()
         .then(surveys => { setState({ ...state, surveys }) })
-        .catch(error => { setState({ ...state, error: error.message }) })
+        .catch(error => {
+          setState({ ...state, error: error.message })
+        })
     }
   }, [state.reload])
   return (
