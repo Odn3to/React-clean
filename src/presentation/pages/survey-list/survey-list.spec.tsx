@@ -4,6 +4,9 @@ import { SurveyList } from '@/presentation/pages'
 import { type LoadSurveyList } from '@/domain/usecases'
 import { mockSurveyListModel } from '@/domain/test'
 import { UnexpectedError } from '@/domain/errors'
+import { ApiContext } from '@/presentation/contexts'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0
@@ -20,7 +23,14 @@ type SutTypes = {
 }
 
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
-  render(<SurveyList loadSurveyList={loadSurveyListSpy}/>)
+  const history = createMemoryHistory()
+  render(
+    <ApiContext.Provider value={{ setCurrentAccount: jest.fn() }}>
+      <Router location={history.location} navigator={history}>
+        <SurveyList loadSurveyList={loadSurveyListSpy}/>
+      </Router>
+    </ApiContext.Provider>
+  )
   return {
     loadSurveyListSpy
   }
