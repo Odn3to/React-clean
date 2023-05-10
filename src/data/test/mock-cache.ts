@@ -3,7 +3,7 @@ import { type GetStorage } from '../protocols/cache'
 
 export class GetStorageSpy implements GetStorage {
   key: string
-  value = faker.random.words()
+  value: any = faker.random.words()
 
   get (key: string): any {
     this.key = key
