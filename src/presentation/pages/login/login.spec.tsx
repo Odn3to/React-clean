@@ -7,12 +7,12 @@ import { ValidationStub, AuthenticationSpy, Helper } from '@/presentation/test/'
 import { faker } from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/contexts'
-import { type AccountModel } from '@/domain/models'
 import '@testing-library/jest-dom/extend-expect'
+import { type Authentication } from '@/domain/usecases'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: Authentication.Model) => void
 }
 
 type SutParams = {

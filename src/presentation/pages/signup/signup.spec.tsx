@@ -7,12 +7,12 @@ import { EmailInUseError } from '@/domain/errors'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import { ApiContext } from '@/presentation/contexts'
-import { type AccountModel } from '@/domain/models'
 import '@testing-library/jest-dom/extend-expect'
+import { type AddAccount } from '@/domain/usecases'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: AddAccount.Model) => void
 }
 
 type SutParams = {
