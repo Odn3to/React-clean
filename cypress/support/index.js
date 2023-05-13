@@ -31,7 +31,7 @@ Cypress.Commands.add('simulateValidSubmitSignUp', () => {
   cy.getByTestId('submit').click()
 })
 
-Cypress.Commands.add('mockInvalidCredentialsError', (url) => {
+Cypress.Commands.add('mockUnauthorizedError', (url) => {
   cy.intercept(url, (req) => {
     req.reply((res) => {
       res.send(401, {
@@ -41,7 +41,7 @@ Cypress.Commands.add('mockInvalidCredentialsError', (url) => {
   })
 })
 
-Cypress.Commands.add('mockEmailInUseError', (url) => {
+Cypress.Commands.add('mockForbidenError', (url) => {
   cy.intercept(url, (req) => {
     req.reply((res) => {
       res.send(403, {
@@ -51,7 +51,7 @@ Cypress.Commands.add('mockEmailInUseError', (url) => {
   })
 })
 
-Cypress.Commands.add('mockUnexpectedError', (url) => {
+Cypress.Commands.add('mockServerError', (url) => {
   cy.intercept(url, (req) => {
     req.reply((res) => {
       res.send(500, {

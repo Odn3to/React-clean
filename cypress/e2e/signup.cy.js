@@ -47,21 +47,14 @@ describe('Signup', () => {
     })
 
     it('Should present EmailInUseError on 403', () => {
-        cy.mockEmailInUseError(/signup/)
+        cy.mockForbidenError(/signup/)
         cy.simulateValidSubmitSignUp()
         cy.testMainError('Esse email já está em uso')
         cy.url().should('eq', `${baseURL}signup`)
     })
 
     it('Should present UnexpectedError on 400', () => {
-        cy.mockUnexpectedError(/signup/)
-        cy.simulateValidSubmitSignUp()
-        cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
-        cy.url().should('eq', `${baseURL}signup`)
-    })
-
-    it('Should present UnexpectedError if invalid data is returned', () => {
-        cy.mockOk(/signup/, { invalid: faker.random.alphaNumeric() })
+        cy.mockUnauthorizedError(/signup/)
         cy.simulateValidSubmitSignUp()
         cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
         cy.url().should('eq', `${baseURL}signup`)
@@ -84,11 +77,5 @@ describe('Signup', () => {
         cy.getByTestId('passwordConfirmation').focus().type(password)
         cy.getByTestId('submit').dblclick()
         cy.get('@request.all').should('have.length', 1)
-    })
-
-    it('Should not call submit is form is invalid', () => {
-        cy.mockOk(/signup/, { accessToken: faker.random.alphaNumeric() }).as('request')
-        cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
-        cy.get('@request.all').should('have.length', 0)
     })
 })

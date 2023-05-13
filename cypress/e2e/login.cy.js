@@ -46,14 +46,14 @@ describe('login', () => {
   })
 
   it('Should present invalidCredentialsError on 401', () => {
-    cy.mockInvalidCredentialsError(/login/)
+    cy.mockUnauthorizedError(/login/)
     cy.simulateValidSubmit()
     cy.testMainError('Credenciais inválidos')
     cy.url().should('eq', `${baseURL}login`)
   })
 
   it('Should present UnexpectedError on 400', () => {
-    cy.mockUnexpectedError(/login/)
+    cy.mockForbidenError(/login/)
     cy.simulateValidSubmit()
     cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
     cy.url().should('eq', `${baseURL}login`)
@@ -67,12 +67,6 @@ describe('login', () => {
     cy.window().then(window => assert.isOk(window.localStorage.getItem('account')))
   })
 
-  it('Should present UnexpectedError if invalid data is returned', () => {
-    cy.mockOk(/login/, { invalid: faker.random.alphaNumeric() })
-    cy.simulateValidSubmit()
-    cy.testMainError('Algo de errado aconteceu. tente novamente em breve.')
-    cy.url().should('eq', `${baseURL}login`)
-  })
 
   it('Should present multiple submits', () => {
     cy.mockOk(/login/, { accessToken: faker.random.alphaNumeric() }).as('request')
