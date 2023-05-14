@@ -39,7 +39,7 @@ Cypress.Commands.add('mockUnauthorizedError', (url) => {
       })
     })
   })
-})
+}).as('request')
 
 Cypress.Commands.add('mockForbidenError', (url) => {
   cy.intercept(url, (req) => {
@@ -49,7 +49,7 @@ Cypress.Commands.add('mockForbidenError', (url) => {
       })
     })
   })
-})
+}).as('request')
 
 Cypress.Commands.add('mockServerError', (url) => {
   cy.intercept(url, (req) => {
@@ -59,7 +59,7 @@ Cypress.Commands.add('mockServerError', (url) => {
       })
     })
   })
-})
+}).as('request')
 
 Cypress.Commands.add('mockOk', (url, response) => {
   cy.intercept(url, (req) => {
