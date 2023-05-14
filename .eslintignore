@@ -6,3 +6,4 @@ public
 *.json
 cypress.config.ts
 cypress
+dist
