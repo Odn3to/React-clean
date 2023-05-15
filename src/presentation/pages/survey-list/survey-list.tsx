@@ -6,12 +6,12 @@ import { Error, SurveyContext, SurveyListItem } from './components'
 import { useErrorHandler } from '@/presentation/hooks'
 
 type Props = {
-  loadSurveyList: LoadSurveyList | null
+  loadSurveyList: LoadSurveyList
 }
 
 const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState({ ...state, error: error.message })
+    setState(old => ({ ...old, error: error.message }))
   })
   const [state, setState] = useState({
     surveys: [] as LoadSurveyList.Model[],
