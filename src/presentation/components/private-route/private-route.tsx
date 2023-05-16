@@ -1,14 +1,20 @@
 import { ApiContext } from '@/presentation/contexts'
-import { SurveyList } from '@/presentation/pages'
 import React, { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
 
-const PrivateRoute: React.FC = () => {
+// type Props = {
+//   children: any
+// }
+
+const PrivateRoute: React.FC<any> = ({ children }: any) => {
   const { getCurrentAccount } = useContext(ApiContext)
 
   const token = getCurrentAccount()?.accessToken
 
-  return token ? <SurveyList loadSurveyList={null} /> : <Navigate to="/login" replace />
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
+  return children
 }
 
 export default PrivateRoute

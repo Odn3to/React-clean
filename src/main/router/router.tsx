@@ -4,7 +4,7 @@ import { makeLoginValidation, makeSignUpValidation } from '@/main/factories/page
 import { ApiContext } from '@/presentation/contexts'
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '../adapters/current-account-adapter'
 import PrivateRoute from '@/presentation/components/private-route/private-route'
-import { Login, Signup, SurveyList } from '@/presentation/pages'
+import { Login, Signup, SurveyList, SurveyResult } from '@/presentation/pages'
 import { makeRemoteAddAccount, makeRemoteAuthentication, makeRemoteLoadSurveyList } from '../factories/usecases'
 
 const Router: React.FC = () => {
@@ -29,13 +29,18 @@ const Router: React.FC = () => {
                       validation={makeSignUpValidation()}
                     />}
                     />
-                  <Route element={<PrivateRoute />}>
-                    <Route path="/" element={
-                      <SurveyList
-                        loadSurveyList={makeRemoteLoadSurveyList()}
-                      />}
-                    />
-                  </Route>
+                  <Route path="/" element={
+                    <PrivateRoute>
+                        <SurveyList
+                          loadSurveyList={makeRemoteLoadSurveyList()}
+                        />
+                    </PrivateRoute>
+                    } />
+                  <Route path="/surveys" element={
+                      <PrivateRoute>
+                        <SurveyResult/>
+                      </PrivateRoute>
+                  } />
               </Routes>
           </Browser>
         </ApiContext.Provider>

@@ -20,11 +20,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   })
 
   useEffect(() => {
-    if (loadSurveyList) {
-      loadSurveyList.loadAll()
-        .then(surveys => { setState({ ...state, surveys }) })
-        .catch(handleError)
-    }
+    loadSurveyList.loadAll()
+      .then(surveys => { setState({ ...state, surveys }) })
+      .catch(handleError)
   }, [state.reload])
   return (
         <div className={Styles.surveyListWrap}>
