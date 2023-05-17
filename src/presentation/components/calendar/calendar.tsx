@@ -8,7 +8,7 @@ type Props = {
 
 const Calendar: React.FC<Props> = ({ date, className }: Props) => {
   return (
-    <time className={[Styles.calendarWrap, className].join('')}>
+    <time className={[Styles.calendarWrap, className].join(' ')}>
         <span data-testid="day" className={Styles.day}>
           {date.getDate().toString().padStart(2, '0')}
         </span>
