@@ -9,7 +9,6 @@ type Props = {
 const Error: React.FC<Props> = ({ error, reload }: Props) => {
   return (
     <div className={Styles.errorWrap}>
-      <h1>aslfhalhfaskfhklsahkdfh</h1>
         <span data-testid="error">{error}</span>
         <button data-testid="reload" onClick={reload}>Tentar novamente</button>
   </div>
