@@ -1,10 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
-import { makeLoginValidation, makeSignUpValidation } from '@/main/factories/pages'
+import { makeLoginValidation, makeSignUpValidation, makeSurveyResult } from '@/main/factories/pages'
 import { ApiContext } from '@/presentation/contexts'
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '../adapters/current-account-adapter'
 import PrivateRoute from '@/presentation/components/private-route/private-route'
-import { Login, Signup, SurveyList, SurveyResult } from '@/presentation/pages'
+import { Login, Signup, SurveyList } from '@/presentation/pages'
 import { makeRemoteAddAccount, makeRemoteAuthentication, makeRemoteLoadSurveyList } from '../factories/usecases'
 
 const Router: React.FC = () => {
@@ -36,9 +36,9 @@ const Router: React.FC = () => {
                         />
                     </PrivateRoute>
                     } />
-                  <Route path="/surveys" element={
+                  <Route path="/surveys/:id" element={
                       <PrivateRoute>
-                        <SurveyResult/>
+                        {makeSurveyResult}
                       </PrivateRoute>
                   } />
               </Routes>
