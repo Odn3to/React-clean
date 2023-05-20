@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { SurveyResult } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/contexts'
@@ -77,7 +77,7 @@ describe('SurveyResultComponent', () => {
     expect(percents[1]).toHaveTextContent(`${surveyResult.answers[1].percent}%`)
   })
 
-  test('Should render error on UnexpectedError', async () => {
+  test('Should render error on UnexpectedError and on reload', async () => {
     const loadSurveyResultSpy = new LoadSurveyResultSpy()
     const error = new UnexpectedError()
     jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
@@ -86,6 +86,9 @@ describe('SurveyResultComponent', () => {
     expect(screen.queryByTestId('question')).not.toBeInTheDocument()
     expect(screen.getByTestId('error')).toHaveTextContent(error.message)
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+    fireEvent.click(screen.queryByTestId('reload'))
+    expect(loadSurveyResultSpy.callsCount).toBe(1)
+    await waitFor(() => screen.getByTestId('survey-result'))
   })
 
   test('Should logout on accessDeniedError', async () => {
