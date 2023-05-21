@@ -1,3 +1,14 @@
+export type HttpRequest = {
+  url: string
+  method: string
+  body?: any
+  headers?: any
+}
+
+export interface HttpClient <R = any> {
+  request: (data: HttpRequest) => Promise<HttpResponse<R>>
+}
+
 export enum HttpStatusCode {
   ok = 200,
   noContent = 204,

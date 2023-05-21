@@ -1,5 +1,5 @@
 import { RemoteAuthentication } from './remote-authentication'
-import { HttpPostClientSpy } from '@/data/test'
+import { HttpClientSpy } from '@/data/test'
 import { mockAuthentication, mockAccountModel } from '@/domain/test'
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
 import { HttpStatusCode } from '@/data/protocols/http'
@@ -7,67 +7,68 @@ import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   sut: RemoteAuthentication
-  httpPostClientSpy: HttpPostClientSpy< RemoteAuthentication.model>
+  httpClientSpy: HttpClientSpy< RemoteAuthentication.model>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy<RemoteAuthentication.model>()
-  const sut = new RemoteAuthentication(url, httpPostClientSpy)
+  const httpClientSpy = new HttpClientSpy<RemoteAuthentication.model>()
+  const sut = new RemoteAuthentication(url, httpClientSpy)
   return {
     sut,
-    httpPostClientSpy
+    httpClientSpy
   }
 }
 
 describe('RemoteAuthentication', () => {
-  test('Should call HttpPostClient with corret URL', async () => {
+  test('Should call HttpClient with corret URL and method', async () => {
     const url = faker.internet.url()
-    const { sut, httpPostClientSpy } = makeSut(url)
+    const { sut, httpClientSpy } = makeSut(url)
     await sut.auth(mockAuthentication())
-    expect(httpPostClientSpy.url).toBe(url)
+    expect(httpClientSpy.url).toBe(url)
+    expect(httpClientSpy.method).toBe('post')
   })
-  test('Should call HttpPostClient with corret body', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
+  test('Should call HttpClient with corret body', async () => {
+    const { sut, httpClientSpy } = makeSut()
     const autheticationParams = mockAuthentication()
     await sut.auth(autheticationParams)
-    expect(httpPostClientSpy.body).toEqual(autheticationParams)
+    expect(httpClientSpy.body).toEqual(autheticationParams)
   })
-  test('Should throw InvalidCredentialsError if HttpPostClient returns 401', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
-    httpPostClientSpy.response = {
+  test('Should throw InvalidCredentialsError if HttpClient returns 401', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.unathorized
     }
     const promise = sut.auth(mockAuthentication())
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
-  test('Should throw Unexpected if HttpPostClient returns 400', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
-    httpPostClientSpy.response = {
+  test('Should throw Unexpected if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
     const promise = sut.auth(mockAuthentication())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
-  test('Should throw Unexpected if HttpPostClient returns 500', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
-    httpPostClientSpy.response = {
+  test('Should throw Unexpected if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
     const promise = sut.auth(mockAuthentication())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
-  test('Should throw Unexpected if HttpPostClient returns 404', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
-    httpPostClientSpy.response = {
+  test('Should throw Unexpected if HttpClient returns 404', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
     const promise = sut.auth(mockAuthentication())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
-  test('Should return an Authentication.model if HttpPostClient returns 200', async () => {
-    const { sut, httpPostClientSpy } = makeSut()
+  test('Should return an Authentication.model if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
     const httpResult = mockAccountModel()
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: httpResult
     }
