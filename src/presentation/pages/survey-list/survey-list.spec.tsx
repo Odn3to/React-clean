@@ -8,7 +8,7 @@ import { ApiContext } from '@/presentation/contexts'
 import { type MemoryHistory, createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import { type AccountModel } from '@/domain/models'
-
+import { RecoilRoot } from 'recoil'
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0
   surveys = mockSurveyListModel()
@@ -29,11 +29,13 @@ const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] })
   const setCurrentAccountMock = jest.fn()
   render(
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
-      <Router location={history.location} navigator={history}>
-        <SurveyList loadSurveyList={loadSurveyListSpy}/>
-      </Router>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
+        <Router location={history.location} navigator={history}>
+          <SurveyList loadSurveyList={loadSurveyListSpy}/>
+        </Router>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
   return {
     loadSurveyListSpy,
