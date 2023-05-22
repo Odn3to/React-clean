@@ -9,6 +9,7 @@ import { Router } from 'react-router-dom'
 import { ApiContext } from '@/presentation/contexts'
 import '@testing-library/jest-dom/extend-expect'
 import { type AddAccount } from '@/domain/usecases'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
@@ -26,6 +27,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
   const setCurrentAccountMock = jest.fn()
   render(
+    <RecoilRoot>
       <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
         <Router location={history.location} navigator={history}>
             <Signup
@@ -34,6 +36,7 @@ const makeSut = (params?: SutParams): SutTypes => {
             />
         </Router>
       </ApiContext.Provider>
+    </RecoilRoot>
   )
   return {
     addAccountSpy,

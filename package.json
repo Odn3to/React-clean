@@ -86,6 +86,7 @@
     "react-dom": "^18.2.0",
     "react-flip-move": "^3.0.5",
     "react-router-dom": "^6.9.0",
+    "recoil": "^0.7.7",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.1"

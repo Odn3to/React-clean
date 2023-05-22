@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Styles from './signup-styles.scss'
-import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components/'
-import { ApiContext, FormContext } from '@/presentation/contexts'
+import { LoginHeader, Footer } from '@/presentation/components/'
+import { ApiContext } from '@/presentation/contexts'
 import { type Validation } from '@/presentation/protocols/validation'
 import { type AddAccount } from '@/domain/usecases'
 import { Link, useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { signUpState, Input, SubmitButton, FormStatus } from './components'
 
 type Props = {
   validation: Validation
@@ -14,19 +16,7 @@ type Props = {
 const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const { setCurrentAccount } = useContext(ApiContext)
   const navigate = useNavigate()
-  const [state, setState] = useState({
-    isLoading: false,
-    isFormInvalid: true,
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    nameError: '',
-    emailError: '',
-    passwordError: '',
-    passwordConfirmationError: '',
-    mainError: ''
-  })
+  const [state, setState] = useRecoilState(signUpState)
 
   useEffect(() => {
     const { name, email, password, passwordConfirmation } = state
@@ -73,7 +63,6 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
   return (
         <div className={Styles.signupWrap}>
             <LoginHeader />
-            <FormContext.Provider value={ { state, setState } }>
               <form className={Styles.form} data-testid="form" onSubmit={handleSubmit}>
                   <h2>Criar Conta</h2>
                   <Input type="text" name="name" placeholder='Digite seu nome' />
@@ -84,7 +73,6 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
                   <Link data-testid="login-link" to="/login" className={Styles.link}>Voltar Para Login</Link>
                   <FormStatus />
               </form>
-            </FormContext.Provider>
             <Footer />
         </div>
   )

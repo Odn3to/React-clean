@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Styles from './login-styles.scss'
-import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components/'
-import { FormContext, ApiContext } from '@/presentation/contexts'
+import { LoginHeader, Footer } from '@/presentation/components/'
+import { ApiContext } from '@/presentation/contexts'
 import { type Validation } from '@/presentation/protocols/validation'
 import { type Authentication } from '@/domain/usecases'
+import { useRecoilState } from 'recoil'
+import { loginState, Input, SubmitButton, FormStatus } from './components'
 
 type Props = {
   validation: Validation
@@ -14,15 +16,8 @@ type Props = {
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const { setCurrentAccount } = useContext(ApiContext)
   const navigate = useNavigate()
-  const [state, setState] = useState({
-    isLoading: false,
-    isFormInvalid: true,
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
-    mainError: ''
-  })
+  const [state, setState] = useRecoilState(loginState)
+
   useEffect(() => {
     const { email, password } = state
     const formData = { email, password }
@@ -62,7 +57,6 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   return (
         <div className={Styles.loginWrap}>
             <LoginHeader />
-            <FormContext.Provider value={ { state, setState } }>
               <form data-testid="form" className={Styles.form} onSubmit={handleSubmit}>
                   <h2>Login</h2>
                   <Input data-testid="email" type="email" name="email" placeholder='Digite seu e-mail' />
@@ -71,7 +65,6 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
                   <Link to="/signup" data-testid="signup" className={Styles.link}>Criar conta</Link>
                   <FormStatus />
               </form>
-            </FormContext.Provider>
             <Footer />
         </div>
   )

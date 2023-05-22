@@ -6,44 +6,47 @@ import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '../adapters/
 import PrivateRoute from '@/presentation/components/private-route/private-route'
 import { Login, Signup, SurveyList } from '@/presentation/pages'
 import { makeRemoteAddAccount, makeRemoteAuthentication, makeRemoteLoadSurveyList } from '../factories/usecases'
+import { RecoilRoot } from 'recoil'
 
 const Router: React.FC = () => {
   return (
-        <ApiContext.Provider
-          value={{
-            setCurrentAccount: setCurrentAccountAdapter,
-            getCurrentAccount: getCurrentAccountAdapter
-          }}
-        >
-          <Browser>
-              <Routes>
-                  <Route path="/login" element={
-                    <Login
-                      authentication={makeRemoteAuthentication()}
-                      validation={makeLoginValidation()}
-                    />}
-                  />
-                  <Route path="/signup" element={
-                    <Signup
-                      addAccount={makeRemoteAddAccount()}
-                      validation={makeSignUpValidation()}
-                    />}
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{
+          setCurrentAccount: setCurrentAccountAdapter,
+          getCurrentAccount: getCurrentAccountAdapter
+        }}
+      >
+      <Browser>
+          <Routes>
+              <Route path="/login" element={
+                <Login
+                  authentication={makeRemoteAuthentication()}
+                  validation={makeLoginValidation()}
+                />}
+              />
+              <Route path="/signup" element={
+                <Signup
+                  addAccount={makeRemoteAddAccount()}
+                  validation={makeSignUpValidation()}
+                />}
+                />
+              <Route path="/" element={
+                <PrivateRoute>
+                    <SurveyList
+                      loadSurveyList={makeRemoteLoadSurveyList()}
                     />
-                  <Route path="/" element={
-                    <PrivateRoute>
-                        <SurveyList
-                          loadSurveyList={makeRemoteLoadSurveyList()}
-                        />
-                    </PrivateRoute>
-                    } />
-                  <Route path="/surveys/:id" element={
-                      <PrivateRoute>
-                        {makeSurveyResult}
-                      </PrivateRoute>
-                  } />
-              </Routes>
-          </Browser>
-        </ApiContext.Provider>
+                </PrivateRoute>
+                } />
+              <Route path="/surveys/:id" element={
+                  <PrivateRoute>
+                    {makeSurveyResult}
+                  </PrivateRoute>
+              } />
+          </Routes>
+      </Browser>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
 }
 

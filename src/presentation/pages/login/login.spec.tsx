@@ -9,6 +9,7 @@ import { InvalidCredentialsError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/contexts'
 import '@testing-library/jest-dom/extend-expect'
 import { type Authentication } from '@/domain/usecases'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
@@ -26,6 +27,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy()
   const setCurrentAccountMock = jest.fn()
   render(
+    <RecoilRoot>
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
       <Router location={history.location} navigator={history}>
         <Login
@@ -34,6 +36,7 @@ const makeSut = (params?: SutParams): SutTypes => {
         />
       </Router>
     </ApiContext.Provider>
+    </RecoilRoot>
   )
   return {
     authenticationSpy,
