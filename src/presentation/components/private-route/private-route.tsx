@@ -1,13 +1,10 @@
-import { ApiContext } from '@/presentation/contexts'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Navigate } from 'react-router-dom'
-
-// type Props = {
-//   children: any
-// }
+import { useRecoilValue } from 'recoil'
+import { currentAccountState } from '@/presentation/components'
 
 const PrivateRoute: React.FC<any> = ({ children }: any) => {
-  const { getCurrentAccount } = useContext(ApiContext)
+  const { getCurrentAccount } = useRecoilValue(currentAccountState)
 
   const token = getCurrentAccount()?.accessToken
 
