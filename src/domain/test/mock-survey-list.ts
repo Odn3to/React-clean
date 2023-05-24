@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { type LoadSurveyList } from '@/domain/usecases'
 
 export const mockSurveyModel = (): LoadSurveyList.Model => ({
-  id: faker.random.alphaNumeric(),
+  id: faker.datatype.uuid(),
   question: faker.random.words(10),
   date: faker.date.recent(),
   didAnswer: faker.datatype.boolean()

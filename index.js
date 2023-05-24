@@ -1,8 +1,8 @@
 const fallback = require('express-history-api-fallback')
 const express = require('express')
 const app = express()
-// eslint-disable-next-line n/no-path-concat
-const root = `${__dirname}/dist`
+const { join } = require('path')
+const root = join(__dirname, 'dist')
 app.use(express.static(root))
 app.use(fallback('index.html', { root }))
 app.listen(process.env.PORT || 9000)
