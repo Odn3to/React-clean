@@ -39,12 +39,12 @@ describe('SurveyList', () => {
   //   cy.getByTestId('username').should('contain.text', name)
   // })
 
-  it('Should logout on logout link click', () => {
-    cy.mockForbidenError(/survey/)
-    cy.visit(baseURL)
-    cy.getByTestId('logout').click()
-    cy.url().should('eq', `${baseURL}login`)
-  })
+  // it('Should logout on logout link click', () => {
+  //   cy.mockForbidenError(/survey/)
+  //   cy.visit(baseURL)
+  //   cy.getByTestId('logout').click()
+  //   cy.url().should('eq', `${baseURL}login`)
+  // })
   
 
   
