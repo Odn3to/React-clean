@@ -4,7 +4,7 @@ import Styles from './login-styles.scss'
 import { LoginHeader, Footer, currentAccountState } from '@/presentation/components/'
 import { type Validation } from '@/presentation/protocols/validation'
 import { type Authentication } from '@/domain/usecases'
-import { useRecoilState ,useRecoilValue } from 'recoil'
+import { useRecoilState ,useRecoilValue, useResetRecoilState } from 'recoil'
 import { loginState, Input, SubmitButton, FormStatus } from './components'
 
 type Props = {
@@ -13,10 +13,12 @@ type Props = {
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const resetLoginState = useResetRecoilState(loginState)
   const { setCurrentAccount } = useRecoilValue(currentAccountState)
   const navigate = useNavigate()
   const [state, setState] = useRecoilState(loginState)
 
+  useEffect(() => { resetLoginState() }, [])
   useEffect(() => {
     const { email, password } = state
     const formData = { email, password }
